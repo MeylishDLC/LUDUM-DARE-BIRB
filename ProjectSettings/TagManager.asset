@@ -41,3 +41,27 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 846580721
+    locked: 0
+  - name: MidBackground
+    uniqueID: 3753272861
+    locked: 0
+  - name: Ground
+    uniqueID: 4053767951
+    locked: 0
+  - name: Sticks
+    uniqueID: 2113852477
+    locked: 0
+  - name: Trunks
+    uniqueID: 3817696131
+    locked: 0
+  - name: Player
+    uniqueID: 3732737649
+    locked: 0
+  - name: Collectables
+    uniqueID: 911710261
+    locked: 0
+  - name: UI
+    uniqueID: 2957672805
+    locked: 0

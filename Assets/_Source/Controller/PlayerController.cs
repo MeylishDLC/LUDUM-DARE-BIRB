@@ -53,6 +53,9 @@ namespace Controller
                     _isHoldingJump = false;
                 }
             }
+            
+            view.UpdateAnimations(view.GetVelocity());
+            view.UpdateFacing(_inputListener.GetMovementValue().x);
         }
         private void FixedUpdate()
         {
@@ -112,6 +115,7 @@ namespace Controller
         private void Die()
         {
             _inputListener.DisableInput();
+            view.PlayDeathAnimation();
             _vcam.Follow = null;
             // todo change sprite state
             // todo show end screen

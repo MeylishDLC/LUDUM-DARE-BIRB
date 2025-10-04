@@ -8,11 +8,7 @@ namespace Controller
         [field: Header("Physics Settings")]
         [field: SerializeField] public float Gravity { get; private set; } = -30f;
         [field: SerializeField] public float MaxFallSpeed { get; private set; } = -25f;
-
-        [field: Header("Gravity Multipliers")]
-        [field: SerializeField, Range(0.1f, 1f)] public float LowJumpGravityMultiplier { get; private set; } = 0.5f;
-        [field: SerializeField, Range(1f, 3f)] public float FallGravityMultiplier { get; private set; } = 2f;
-
+        
         [field: Header("Movement Settings")]
         [field: SerializeField] public float HorizontalMoveSpeed { get; private set; } = 8f;
         [field: SerializeField] public float Acceleration { get; private set; } = 20f;
