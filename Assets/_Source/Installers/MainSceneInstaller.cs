@@ -1,5 +1,6 @@
 using Cinemachine;
 using Controller;
+using Core;
 using InputSystem;
 using UnityEngine;
 using Zenject;
@@ -12,11 +13,17 @@ namespace Installers
         [SerializeField] private Camera mainCamera;
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
         [SerializeField] private PlayerController playerController;
+        
         public override void InstallBindings()
         {
+            BindSceneController();
             BindInputListener();
             BindCameras();
             BindPlayer();
+        }
+        private void BindSceneController()
+        {
+            Container.Bind<SceneController>().AsSingle();
         }
         private void BindInputListener()
         {

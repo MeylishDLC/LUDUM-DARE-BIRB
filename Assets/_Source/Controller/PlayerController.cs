@@ -1,4 +1,5 @@
-﻿using Cinemachine;
+﻿using System;
+using Cinemachine;
 using InputSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -8,6 +9,8 @@ namespace Controller
 {
     public class PlayerController : MonoBehaviour
     {
+        public event Action OnPlayerDeath;
+        
         [SerializeField] private PlayerControllerConfig config;
         [SerializeField] private PlayerView view; 
         [SerializeField] private LayerMask obstacleMask;
@@ -117,8 +120,7 @@ namespace Controller
             _inputListener.DisableInput();
             view.PlayDeathAnimation();
             _vcam.Follow = null;
-            // todo change sprite state
-            // todo show end screen
+            OnPlayerDeath?.Invoke();
         }
     }
 }
