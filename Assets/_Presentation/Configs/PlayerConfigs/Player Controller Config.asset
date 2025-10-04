@@ -20,5 +20,5 @@ MonoBehaviour:
   <Acceleration>k__BackingField: 25
   <Deceleration>k__BackingField: 35
   <MinJumpForce>k__BackingField: 2
-  <JumpForce>k__BackingField: 6
+  <JumpForce>k__BackingField: 8
   <MaxJumpHoldTime>k__BackingField: 0.1

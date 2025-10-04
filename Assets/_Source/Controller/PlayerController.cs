@@ -1,4 +1,5 @@
-﻿using InputSystem;
+﻿using Cinemachine;
+using InputSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -9,18 +10,20 @@ namespace Controller
     {
         [SerializeField] private PlayerControllerConfig config;
         [SerializeField] private PlayerView view; 
-        [SerializeField] private LayerMask groundMask;
+        [SerializeField] private LayerMask obstacleMask;
 
         private PlayerModel _model;
         private InputListener _inputListener;
+        private CinemachineVirtualCamera _vcam;
         
         private float _jumpHoldTimer;
         private bool _isHoldingJump;
 
         [Inject]
-        public void Initialize(InputListener inputListener)
+        public void Initialize(InputListener inputListener, CinemachineVirtualCamera vcam)
         {
             _inputListener = inputListener;
+            _vcam = vcam;
         }
         private void Awake()
         {
@@ -30,11 +33,13 @@ namespace Controller
         {
             _inputListener.OnJumpStarted += HandleJumpStarted;
             _inputListener.OnJumpEnded += HandleJumpEnded;
+            view.OnTriggered += HandleCollision;
         }
         private void OnDisable()
         {
             _inputListener.OnJumpStarted -= HandleJumpStarted;
             _inputListener.OnJumpEnded -= HandleJumpEnded;
+            view.OnTriggered -= HandleCollision;
         }
         private void Update()
         {
@@ -95,6 +100,21 @@ namespace Controller
                 }
             }
             _isHoldingJump = false;
+        }
+        private void HandleCollision(Collider2D other)
+        {
+            if (((1 << other.gameObject.layer) & obstacleMask.value) != 0)
+            {
+                Die();
+                Debug.Log("Player died");
+            }
+        }
+        private void Die()
+        {
+            _inputListener.DisableInput();
+            _vcam.Follow = null;
+            // todo change sprite state
+            // todo show end screen
         }
     }
 }

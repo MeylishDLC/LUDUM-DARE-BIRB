@@ -26,12 +26,20 @@ namespace InputSystem
         }
         private void OnDisable()
         {
-            _jumpAction.Disable();
-            _moveAction.Disable();
+            DisableInput();
         }
         private void OnDestroy()
         {
             CleanUp();
+        }
+        public Vector2 GetMovementValue()
+        {
+            return _moveAction.ReadValue<Vector2>();
+        }
+        public void DisableInput()
+        {
+            _moveAction.Disable();
+            _jumpAction.Disable();
         }
         private void SetupActions()
         {
@@ -49,10 +57,7 @@ namespace InputSystem
         {
             OnJumpEnded?.Invoke();
         }
-        public Vector2 GetMovementValue()
-        {
-            return _moveAction.ReadValue<Vector2>();
-        }
+       
         private void CleanUp()
         {
             _jumpAction.started -= OnJumpButtonPressed;

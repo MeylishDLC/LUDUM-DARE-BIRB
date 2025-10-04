@@ -1,3 +1,4 @@
+using Cinemachine;
 using Controller;
 using InputSystem;
 using UnityEngine;
@@ -9,20 +10,22 @@ namespace Installers
     {
         [SerializeField] private InputListener inputListener;
         [SerializeField] private Camera mainCamera;
+        [SerializeField] private CinemachineVirtualCamera virtualCamera;
         [SerializeField] private PlayerController playerController;
         public override void InstallBindings()
         {
             BindInputListener();
-            BindMainCamera();
+            BindCameras();
             BindPlayer();
         }
         private void BindInputListener()
         {
             Container.Bind<InputListener>().FromInstance(inputListener).AsSingle();
         }
-        private void BindMainCamera()
+        private void BindCameras()
         {
             Container.Bind<Camera>().FromInstance(mainCamera).AsSingle();
+            Container.Bind<CinemachineVirtualCamera>().FromInstance(virtualCamera).AsSingle();
         }
         private void BindPlayer()
         {

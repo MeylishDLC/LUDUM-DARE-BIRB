@@ -4,8 +4,6 @@ namespace Controller
 {
     public class PlayerModel
     {
-        public Vector2 Velocity { get; set; }
-
         private float _lastJumpTime;
         private int _jumpPressCount;
         public float CalculateJumpForce(float baseJumpForce, float currentTime, float maxFrequencyBoost = 2f, float frequencyWindow = 0.3f)
