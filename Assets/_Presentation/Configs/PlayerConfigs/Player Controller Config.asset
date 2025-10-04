@@ -16,7 +16,7 @@ MonoBehaviour:
   <HorizontalMoveSpeed>k__BackingField: 6.5
   <Acceleration>k__BackingField: 20
   <Deceleration>k__BackingField: 30
-  <JumpForce>k__BackingField: 8
-  <MaxJumpHoldTime>k__BackingField: 0.2
-  <MinJumpForce>k__BackingField: 5
-  <MaxFallSpeed>k__BackingField: 20
+  <JumpForce>k__BackingField: 6
+  <MaxJumpHoldTime>k__BackingField: 0.4
+  <MinJumpForce>k__BackingField: 3
+  <MaxFallSpeed>k__BackingField: 25
