@@ -11,7 +11,10 @@ namespace Controller
         
         [SerializeField] private Animator animator;
         [SerializeField] private SpriteRenderer spriteRenderer;
+        
         private Rigidbody2D _rb;
+        private float _gravityMultiplier = 1f; 
+
         public event Action<Collider2D> OnTriggered;
         private void Awake()
         {
@@ -29,11 +32,15 @@ namespace Controller
         {
             return _rb.velocity;
         }
+        public void SetGravityMultiplier(float multiplier)
+        {
+            _gravityMultiplier = multiplier;
+        }
         public void ApplyGravity(float gravity, float maxFallSpeed)
         {
             if (_rb.velocity.y > -maxFallSpeed)
             {
-                _rb.velocity += Vector2.down * (gravity * Time.fixedDeltaTime);
+                _rb.velocity += Vector2.down * (gravity * _gravityMultiplier * Time.fixedDeltaTime);
             }
         }
         public void UpdateAnimations(Vector2 velocity)

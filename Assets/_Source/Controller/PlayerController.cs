@@ -93,26 +93,20 @@ namespace Controller
         }
         private void HandleJumpEnded()
         {
-            if (_isHoldingJump)
-            {
-                var t = Mathf.Clamp01(_jumpHoldTimer / config.MaxJumpHoldTime);
-                var extraForce = Mathf.Lerp(config.MinJumpForce, config.JumpForce, t);
-
-                var velocity = view.GetVelocity();
-                if (velocity.y > 0)
-                {
-                    velocity.y += extraForce * 0.5f;
-                    view.SetVelocity(velocity);
-                }
-            }
             _isHoldingJump = false;
+
+            var velocity = view.GetVelocity();
+            if (velocity.y > 0)
+            {
+                velocity.y *= 0.5f;
+                view.SetVelocity(velocity);
+            }
         }
         private void HandleCollision(Collider2D other)
         {
             if (((1 << other.gameObject.layer) & obstacleMask.value) != 0)
             {
                 Die();
-                Debug.Log("Player died");
             }
         }
         private void Die()
@@ -120,6 +114,19 @@ namespace Controller
             _inputListener.DisableInput();
             view.PlayDeathAnimation();
             _vcam.Follow = null;
+
+            // 💥 Сбрасываем вертикальную скорость вверх, чтобы игрок не "летел" после смерти
+            var velocity = view.GetVelocity();
+            if (velocity.y > 0)
+                velocity.y = 0;
+
+            // 💀 Добавляем лёгкий импульс вниз, чтобы персонаж сразу падал
+            velocity.y -= 10f;
+            view.SetVelocity(velocity);
+
+            // Можно добавить чуть больше гравитации при смерти, чтобы падение ощущалось тяжелее
+            view.SetGravityMultiplier(2f);
+
             OnPlayerDeath?.Invoke();
         }
     }
