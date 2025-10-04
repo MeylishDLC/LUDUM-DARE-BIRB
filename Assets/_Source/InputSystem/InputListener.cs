@@ -7,6 +7,7 @@ namespace InputSystem
     public class InputListener : MonoBehaviour
     {
         public event Action OnJumpStarted;
+        public event Action OnJumpEnded;
 
         private Controls _controls;
         private InputAction _jumpAction;
@@ -16,18 +17,6 @@ namespace InputSystem
         {
             _controls = new Controls();
             SetupActions();
-        }
-        private void Update()
-        {
-            var dir = GetMovementValue();
-            if (dir.x > 0)
-            {
-                Debug.Log($"Move started: moving right.");
-            }
-            else if (dir.x < 0)
-            {
-                Debug.Log($"Move started: moving left.");
-            }
         }
 
         private void OnEnable()
@@ -48,13 +37,17 @@ namespace InputSystem
         {
             _jumpAction = _controls.Player.Jump;
             _jumpAction.started += OnJumpButtonPressed;
+            _jumpAction.canceled += OnJumpButtonReleased;
             
             _moveAction = _controls.Player.Move; 
         }
         private void OnJumpButtonPressed(InputAction.CallbackContext context)
         {
             OnJumpStarted?.Invoke();
-            Debug.Log("Jump pressed");
+        }
+        private void OnJumpButtonReleased(InputAction.CallbackContext context)
+        {
+            OnJumpEnded?.Invoke();
         }
         public Vector2 GetMovementValue()
         {
@@ -63,6 +56,7 @@ namespace InputSystem
         private void CleanUp()
         {
             _jumpAction.started -= OnJumpButtonPressed;
+            _jumpAction.canceled -= OnJumpButtonReleased;
         }
     }
 }
