@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c27c7b6283ba4ea9a7a27a2c4cb668ad, type: 3}
   m_Name: Player Controller Config
   m_EditorClassIdentifier: 
-  <Gravity>k__BackingField: -25
-  <MaxFallSpeed>k__BackingField: -50
+  <Gravity>k__BackingField: 30
+  <MaxFallSpeed>k__BackingField: 10
   <HorizontalMoveSpeed>k__BackingField: 8
-  <Acceleration>k__BackingField: 20
-  <Deceleration>k__BackingField: 25
-  <MinJumpForce>k__BackingField: 8
-  <JumpForce>k__BackingField: 14
+  <Acceleration>k__BackingField: 14
+  <Deceleration>k__BackingField: 20
+  <MinJumpForce>k__BackingField: 6
+  <JumpForce>k__BackingField: 9
   <MaxJumpHoldTime>k__BackingField: 0.15
