@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using PoolSystem;
 using UnityEngine;
 
@@ -8,7 +9,6 @@ namespace EnvironmentObjects.Sticks
     {
         public StickPairPool(PoolConfig poolConfig) : base(poolConfig)
         { }
-
         public override bool TryGetFromPool(out StickPair instance)
         {
             if (Pool.TryDequeue(out instance))
@@ -27,7 +27,6 @@ namespace EnvironmentObjects.Sticks
             instance = null;
             return false;
         }
-
         public override void DisableAll()
         {
             foreach (var instance in AllObjects.Where(pair => pair.gameObject.activeSelf))

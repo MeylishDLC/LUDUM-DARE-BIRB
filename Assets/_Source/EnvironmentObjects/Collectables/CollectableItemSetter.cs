@@ -5,68 +5,74 @@ using Random = UnityEngine.Random;
 
 namespace EnvironmentObjects.Collectables
 {
-    public class CollectableItemSetter: MonoBehaviour
+    public class CollectableItemSetter : MonoBehaviour
     {
-        [Range(0,100)] [SerializeField] private int itemPlaceChance = 50;
+        [Range(0, 100)] [SerializeField] private int itemPlaceChance = 50;
         [SerializeField] private StickPair stickPair;
 
         private CollectableItemPool _itemPool;
         private CollectableItem _currentItem;
         private Transform _origParent;
+        private bool _isInitialized;
+
         public void InitializePool(CollectableItemPool pool)
         {
-            Debug.Log("CollectableItemPool initialized");
+            if (_isInitialized)
+            {
+                return;
+            }
+
             _itemPool = pool;
             stickPair.OnObjectEnabled += PlaceRandomItem;
             stickPair.OnObjectDisabled += RemoveRandomItem;
-            
-            PlaceRandomItem(null);
+            _isInitialized = true;
         }
         private void PlaceRandomItem(StickPair _)
         {
+            if (_currentItem != null)
+            {
+                RemoveRandomItem(stickPair);
+            }
+
             if (!CheckPlaceChance())
             {
                 return;
             }
-            
+
             if (_itemPool.TryGetFromPool(out var item))
             {
                 _currentItem = item;
-                _origParent = _currentItem.gameObject.transform.parent;
+                _origParent = _currentItem.transform.parent;
+
                 var randomPoint = GetRandomPoint();
-                
-                _currentItem.gameObject.transform.SetParent(randomPoint);
-                _currentItem.gameObject.transform.position = randomPoint.position;
+                _currentItem.transform.SetParent(randomPoint);
+                _currentItem.transform.position = randomPoint.position;
+                _currentItem.gameObject.SetActive(true);
+
                 _currentItem.OnCollected += StopPlacingItems;
             }
         }
         private void RemoveRandomItem(StickPair _)
         {
-            if (!_currentItem)
+            if (_currentItem == null)
             {
                 return;
             }
-            _currentItem.gameObject.SetActive(false);
+
             _currentItem.OnCollected -= StopPlacingItems;
-            _origParent = null;
+            _currentItem.gameObject.SetActive(false);
+            _currentItem.transform.SetParent(_origParent);
             _currentItem = null;
         }
-
         private bool CheckPlaceChance()
         {
-            var randomChance = Random.Range(0, 100);
-            
-            if (randomChance <= itemPlaceChance)
-            {
-                return true;
-            }
-            return false;
+            return Random.Range(0, 100) < itemPlaceChance;
         }
-
         private Transform GetRandomPoint()
         {
-            var point = stickPair.ItemSpawnPoints[Random.Range(0, stickPair.ItemSpawnPoints.Length)];
-            return point;
+            return stickPair.ItemSpawnPoints[
+                Random.Range(0, stickPair.ItemSpawnPoints.Length)
+            ];
         }
         private void StopPlacingItems()
         {
@@ -74,7 +80,8 @@ namespace EnvironmentObjects.Collectables
             {
                 _currentItem.OnCollected -= StopPlacingItems;
             }
-            Destroy(gameObject);
+
+            _currentItem = null;
         }
     }
 }

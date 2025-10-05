@@ -73,23 +73,38 @@ namespace EnvironmentObjects.Sticks
         private void MoveLastToTop(StickPair top)
         {
             var recycled = _activePairs.Dequeue();
+            //return to pool 
+            recycled.gameObject.SetActive(false);
+
+            //taking new random one
+            var newPair = GetRandomPair();
+            var itemSetter = newPair.GetComponentInChildren<CollectableItemSetter>();
+            itemSetter.InitializePool(_itemPool);
+
             var newPos = top.transform.position + Vector3.up * config.DistanceY;
+            newPair.transform.position = newPos;
+            newPair.gameObject.SetActive(true);
 
-            recycled.transform.position = newPos;
-            recycled.gameObject.SetActive(true);
-
-            _activePairs.Enqueue(recycled); 
+            _activePairs.Enqueue(newPair);
         }
         private void MoveTopToLast(StickPair bottom)
         {
             var topList = new List<StickPair>(_activePairs);
             var topPair = topList[^1];
-                
-            var newPos = bottom.transform.position - Vector3.up * config.DistanceY;
-            topPair.transform.position = newPos;
+            //return to pool
+            topPair.gameObject.SetActive(false);
 
+            //taking new random one
+            var newPair = GetRandomPair();
+            var itemSetter = newPair.GetComponentInChildren<CollectableItemSetter>();
+            itemSetter.InitializePool(_itemPool);
+
+            var newPos = bottom.transform.position - Vector3.up * config.DistanceY;
+            newPair.transform.position = newPos;
+            newPair.gameObject.SetActive(true);
+            
             topList.RemoveAt(topList.Count - 1);
-            topList.Insert(0, topPair);
+            topList.Insert(0, newPair);
 
             _activePairs.Clear();
             foreach (var p in topList)

@@ -8,7 +8,7 @@ namespace PoolSystem
     public abstract class GenericPool<T>: IPool<T> where T : Object, IPoolObject<T>
     {
         protected readonly List<T> AllObjects = new();
-        protected readonly Queue<T> Pool = new();
+        protected Queue<T> Pool = new();
         protected readonly int MaxPoolSize;
         protected readonly Transform ParentTransform;
         protected T[] ObjectPrefabs;
