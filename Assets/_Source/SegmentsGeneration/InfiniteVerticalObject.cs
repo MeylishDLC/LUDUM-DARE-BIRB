@@ -2,15 +2,15 @@
 using UnityEngine;
 using Zenject;
 
-namespace EnvironmentObjects.TrunkTiling
+namespace SegmentsGeneration
 {
-    public class InfiniteTrunk : MonoBehaviour
+    public class InfiniteVerticalObject: MonoBehaviour
     {
-        [SerializeField] private int segmentCount = 10;
+        [SerializeField] private int segmentCount = 6;
         [SerializeField] private float cameraOffset = 50f;
-        [SerializeField] private TrunkSegment[] segmentPrefabs;
+        [SerializeField] private Segment[] segmentPrefabs;
 
-        private TrunkSegment[] _segments;
+        private Segment[] _segments;
         private Transform _player;
 
         [Inject]
@@ -20,7 +20,7 @@ namespace EnvironmentObjects.TrunkTiling
         }
         private void Start()
         {
-            _segments = new TrunkSegment[segmentCount];
+            _segments = new Segment[segmentCount];
             SpawnStartSegments();
         }
         private void Update()
@@ -42,7 +42,7 @@ namespace EnvironmentObjects.TrunkTiling
                 }
             }
         }
-        private void ReplaceSegmentAbove(TrunkSegment oldSeg, TrunkSegment previousSeg)
+        private void ReplaceSegmentAbove(Segment oldSeg, Segment previousSeg)
         {
             Destroy(oldSeg.gameObject);
 
@@ -52,7 +52,7 @@ namespace EnvironmentObjects.TrunkTiling
 
             ReplaceSegmentReference(oldSeg, newSeg);
         }
-        private void ReplaceSegmentBelow(TrunkSegment oldSeg, TrunkSegment previousSeg)
+        private void ReplaceSegmentBelow(Segment oldSeg, Segment previousSeg)
         {
             Destroy(oldSeg.gameObject);
 
@@ -60,7 +60,7 @@ namespace EnvironmentObjects.TrunkTiling
             AttachSegmentBelow(newSeg, previousSeg);
             ReplaceSegmentReference(oldSeg, newSeg);
         }
-        private void ReplaceSegmentReference(TrunkSegment oldSeg, TrunkSegment newSeg)
+        private void ReplaceSegmentReference(Segment oldSeg, Segment newSeg)
         {
             for (int i = 0; i < _segments.Length; i++)
             {
@@ -71,21 +71,21 @@ namespace EnvironmentObjects.TrunkTiling
                 }
             }
         }
-        private TrunkSegment GetRandomPrefab()
+        private Segment GetRandomPrefab()
         {
             return segmentPrefabs[Random.Range(0, segmentPrefabs.Length)];
         }
-        private void AttachSegment(TrunkSegment newSeg, TrunkSegment previousSeg)
+        private void AttachSegment(Segment newSeg, Segment previousSeg)
         {
             var offset = previousSeg.TopPoint.position - newSeg.BottomPoint.position;
             newSeg.transform.position += offset;
         }
-        private void AttachSegmentBelow(TrunkSegment newSeg, TrunkSegment previousSeg)
+        private void AttachSegmentBelow(Segment newSeg, Segment previousSeg)
         {
             var offset = previousSeg.BottomPoint.position - newSeg.TopPoint.position;
             newSeg.transform.position += offset;
         }
-        private TrunkSegment GetTopSegment()
+        private Segment GetTopSegment()
         {
             var top = _segments[0];
             foreach (var seg in _segments)
@@ -98,7 +98,7 @@ namespace EnvironmentObjects.TrunkTiling
 
             return top;
         }
-        private TrunkSegment GetBottomSegment()
+        private Segment GetBottomSegment()
         {
             var bottom = _segments[0];
             var bottomY = _segments[0].BottomPoint.position.y;

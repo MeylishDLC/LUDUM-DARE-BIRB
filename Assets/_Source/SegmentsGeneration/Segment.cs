@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace EnvironmentObjects.TrunkTiling
+namespace SegmentsGeneration
 {
-    public class TrunkSegment: MonoBehaviour
+    public class Segment: MonoBehaviour
     {
         [field: SerializeField] public Transform TopPoint { get; private set; }
         [field: SerializeField] public Transform BottomPoint { get; private set; }
