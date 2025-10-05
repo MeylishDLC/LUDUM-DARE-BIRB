@@ -35,12 +35,9 @@ namespace UIScreens
             _player.OnPlayerDeath += ShowDeathScreen;
             gameObject.SetActive(false);
         }
-        private void OnDestroy()
-        {
-            _player.OnPlayerDeath -= ShowDeathScreen;
-        }
         private void ShowDeathScreen()
         {
+            _player.OnPlayerDeath -= ShowDeathScreen;
             ShowDeathScreenAsync(_ctOnDestroy).Forget();
         }
         private async UniTask ShowDeathScreenAsync(CancellationToken token)

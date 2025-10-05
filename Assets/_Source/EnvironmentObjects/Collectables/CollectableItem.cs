@@ -25,4 +25,4 @@ namespace EnvironmentObjects.Collectables
             OnObjectDisabled?.Invoke(this);
         }
     }
-}
+} 
