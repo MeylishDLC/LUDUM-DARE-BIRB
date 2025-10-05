@@ -13,7 +13,13 @@ namespace Installers
         public override void InstallBindings()
         {
             BindSoundManager();
+            BindSceneController();
             BindScoreSaver();
+        }
+        private void BindSceneController()
+        {
+            var controller = new SceneController(1);
+            Container.Bind<SceneController>().FromInstance(controller).AsSingle();
         }
         private void BindScoreSaver()
         {

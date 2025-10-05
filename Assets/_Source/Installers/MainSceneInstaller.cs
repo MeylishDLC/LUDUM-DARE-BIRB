@@ -18,16 +18,12 @@ namespace Installers
         
         public override void InstallBindings()
         {
-            BindSceneController();
             BindInputListener();
             BindCameras();
             BindPlayer();
             BindCounter();
         }
-        private void BindSceneController()
-        {
-            Container.Bind<SceneController>().AsSingle();
-        }
+       
         private void BindInputListener()
         {
             Container.Bind<InputListener>().FromInstance(inputListener).AsSingle();
