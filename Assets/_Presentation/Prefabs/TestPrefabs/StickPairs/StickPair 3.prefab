@@ -33,6 +33,7 @@ Transform:
   - {fileID: 5447499270850706148}
   - {fileID: 4940480319399066225}
   - {fileID: 6427691631334397239}
+  - {fileID: 5827753200917346382}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6464608831584280240
@@ -50,7 +51,6 @@ MonoBehaviour:
   <ItemSpawnPoints>k__BackingField:
   - {fileID: 412875147080935407}
   - {fileID: 8470870318457693485}
-  <Height>k__BackingField: 20
 --- !u!1 &1565620535175042562
 GameObject:
   m_ObjectHideFlags: 0
@@ -84,6 +84,52 @@ Transform:
   - {fileID: 8470870318457693485}
   m_Father: {fileID: 2358471449958312464}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2923277978063236446
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5827753200917346382}
+  - component: {fileID: 3028662778453379192}
+  m_Layer: 0
+  m_Name: CollectableSetter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5827753200917346382
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2923277978063236446}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2358471449958312464}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3028662778453379192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2923277978063236446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa9748e883e24cd29d6d1f7ddbfb2cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPlaceChance: 50
+  stickPair: {fileID: 6464608831584280240}
 --- !u!1 &5613974452140953922
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +285,7 @@ Transform:
   m_GameObject: {fileID: 6096412909292314722}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.1, y: 1.62, z: 0}
+  m_LocalPosition: {x: 3.1, y: 2.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -400,7 +446,7 @@ Transform:
   m_GameObject: {fileID: 9192611407021368552}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9, y: 1.62, z: 0}
+  m_LocalPosition: {x: -9, y: 2.42, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

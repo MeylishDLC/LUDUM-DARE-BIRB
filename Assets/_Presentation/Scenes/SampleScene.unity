@@ -1010,7 +1010,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: -9.999992}
   m_SizeDelta: {x: 549.62, y: 118.68}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1329195445
@@ -2002,6 +2002,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sticksGenerator: {fileID: 1001726357}
   stickPairPoolConfig: {fileID: 11400000, guid: b98d39c2ca4139540839b4d17eda1b25, type: 2}
+  collectableItemPoolConfig: {fileID: 11400000, guid: 1577b6b5222d6f5499c11768a5c97613, type: 2}
 --- !u!4 &1844355666
 Transform:
   m_ObjectHideFlags: 0

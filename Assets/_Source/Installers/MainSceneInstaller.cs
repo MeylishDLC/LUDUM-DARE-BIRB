@@ -38,5 +38,6 @@ namespace Installers
         {
             Container.Bind<PlayerController>().FromInstance(playerController).AsSingle();
         }
+        
     }
 }

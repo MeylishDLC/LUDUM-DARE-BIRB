@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Obstacle
-  - 
+  - Collectable
   - 
   - 
   - 
@@ -53,14 +53,14 @@ TagManager:
   - name: Trunks
     uniqueID: 3817696131
     locked: 0
-  - name: Ground
-    uniqueID: 4053767951
-    locked: 0
   - name: Player
     uniqueID: 3732737649
     locked: 0
   - name: Collectables
     uniqueID: 911710261
+    locked: 0
+  - name: Ground
+    uniqueID: 4053767951
     locked: 0
   - name: UI
     uniqueID: 2957672805

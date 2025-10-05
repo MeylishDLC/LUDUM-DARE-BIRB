@@ -115,18 +115,16 @@ namespace Controller
             view.PlayDeathAnimation();
             _vcam.Follow = null;
 
-            // 💥 Сбрасываем вертикальную скорость вверх, чтобы игрок не "летел" после смерти
             var velocity = view.GetVelocity();
             if (velocity.y > 0)
+            { 
                 velocity.y = 0;
+            }
 
-            // 💀 Добавляем лёгкий импульс вниз, чтобы персонаж сразу падал
             velocity.y -= 10f;
             view.SetVelocity(velocity);
 
-            // Можно добавить чуть больше гравитации при смерти, чтобы падение ощущалось тяжелее
             view.SetGravityMultiplier(2f);
-
             OnPlayerDeath?.Invoke();
         }
     }

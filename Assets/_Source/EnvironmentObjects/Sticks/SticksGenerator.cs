@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Controller;
+using EnvironmentObjects.Collectables;
 using UnityEngine;
 using Zenject;
 using Object = UnityEngine.Object;
@@ -13,6 +14,7 @@ namespace EnvironmentObjects.Sticks
         [SerializeField] private float startYOffset = 3f;
         [SerializeField] private SticksGeneratorConfig config;
         private StickPairPool _stickPairPool;
+        private CollectableItemPool _itemPool;
         private Transform _player;
 
         private readonly Queue<StickPair> _activePairs = new();
@@ -23,15 +25,16 @@ namespace EnvironmentObjects.Sticks
             _player = playerController.transform;
         }
 
-        public void InitializePool(StickPairPool pool)
+        public void InitializePools(StickPairPool pool, CollectableItemPool itemPool)
         {
             _stickPairPool = pool;
+            _itemPool = itemPool;
         }
         private void Start()
         {
-            if (_stickPairPool == null)
+            if (_stickPairPool == null || _itemPool == null)
             {
-                Debug.LogError("Stick Pair pool not initialized");
+                Debug.LogError("Pools were not initialized");
                 return;
             }
 
@@ -39,9 +42,11 @@ namespace EnvironmentObjects.Sticks
             for (int i = 0; i < config.MaxPairs; i++)
             {
                 var pair = GetRandomPair();
+                var itemSetter = pair.GetComponentInChildren<CollectableItemSetter>();
+                itemSetter.InitializePool(_itemPool);
+
                 var pos = new Vector3(0f, startY + i * config.DistanceY, 0f);
                 pair.transform.position = pos;
-                pair.gameObject.SetActive(true);
                 _activePairs.Enqueue(pair);
             }
         }
@@ -107,7 +112,7 @@ namespace EnvironmentObjects.Sticks
             {
                 return pair;
             }
-            throw new Exception("Stick pool is empty!");
+            throw new Exception("Stick pool is empty");
         }
     }
 }

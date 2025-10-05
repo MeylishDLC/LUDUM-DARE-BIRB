@@ -1,4 +1,5 @@
 ﻿using System;
+using EnvironmentObjects.Collectables;
 using EnvironmentObjects.Sticks;
 using PoolSystem;
 using UnityEngine;
@@ -11,7 +12,10 @@ namespace Core
         
         [Header("Pools")]
         [SerializeField] private PoolConfig stickPairPoolConfig;
+        [SerializeField] private PoolConfig collectableItemPoolConfig;
+        
         private StickPairPool _stickPairPool;
+        private CollectableItemPool _collectableItemPool;
 
         private void Awake()
         {
@@ -25,10 +29,11 @@ namespace Core
         private void CreatePools()
         {
             _stickPairPool = new StickPairPool(stickPairPoolConfig);
+            _collectableItemPool = new CollectableItemPool(collectableItemPoolConfig);
         }
         private void InjectPools()
         {
-            sticksGenerator.InitializePool(_stickPairPool);
+            sticksGenerator.InitializePools(_stickPairPool, _collectableItemPool);
         }
     }
 }

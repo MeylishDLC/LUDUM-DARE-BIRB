@@ -6,12 +6,17 @@ namespace EnvironmentObjects.Sticks
 {
     public class StickPair: MonoBehaviour, IPoolObject<StickPair>
     {
-        [field: SerializeField] public Transform[] ItemSpawnPoints { get; private set; }
         public event Action<StickPair> OnObjectDisabled;
+        public event Action<StickPair> OnObjectEnabled;
+        
+        [field: SerializeField] public Transform[] ItemSpawnPoints { get; private set; }
+        private void OnEnable()
+        {
+            OnObjectEnabled?.Invoke(this);
+        }
         private void OnDisable()
         {
             OnObjectDisabled?.Invoke(this);
-            Debug.Log("Returned to pool");
         }
     }
 }
