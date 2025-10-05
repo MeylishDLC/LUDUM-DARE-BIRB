@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7f493b27d084908bcef577fad742659, type: 3}
+  m_Name: Sticks Pair Pool Config
+  m_EditorClassIdentifier: 
+  <InitialPoolSize>k__BackingField: 5
+  <MaxPoolSize>k__BackingField: 20
+  <Prefabs>k__BackingField:
+  - {fileID: 858519929343919233, guid: 235a5e60a6cc3b345818d728c3a40af1, type: 3}
+  - {fileID: 8572576097252595527, guid: c045d9e74af0b4a4d90877465aa89846, type: 3}
+  - {fileID: 1107239522111840437, guid: 1b2e1e14d776d6449a5abf9abe254b27, type: 3}
