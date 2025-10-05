@@ -3,18 +3,19 @@ using EnvironmentObjects.Collectables;
 using EnvironmentObjects.Sticks;
 using PoolSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Core
 {
     public class Bootstrapper: MonoBehaviour
     {
-        [SerializeField] private SticksGenerator sticksGenerator;
+        [FormerlySerializedAs("sticksGenerator")] [SerializeField] private ObstacleGenerator obstacleGenerator;
         
         [Header("Pools")]
         [SerializeField] private PoolConfig stickPairPoolConfig;
         [SerializeField] private PoolConfig collectableItemPoolConfig;
         
-        private StickPairPool _stickPairPool;
+        private ObstaclePool _obstaclePool;
         private CollectableItemPool _collectableItemPool;
 
         private void Awake()
@@ -24,16 +25,17 @@ namespace Core
         }
         private void OnDestroy()
         {
-            _stickPairPool.CleanUp();
+            _obstaclePool.CleanUp();
+            _collectableItemPool.CleanUp();
         }
         private void CreatePools()
         {
-            _stickPairPool = new StickPairPool(stickPairPoolConfig);
+            _obstaclePool = new ObstaclePool(stickPairPoolConfig);
             _collectableItemPool = new CollectableItemPool(collectableItemPoolConfig);
         }
         private void InjectPools()
         {
-            sticksGenerator.InitializePools(_stickPairPool, _collectableItemPool);
+            obstacleGenerator.InitializePools(_obstaclePool, _collectableItemPool);
         }
     }
 }

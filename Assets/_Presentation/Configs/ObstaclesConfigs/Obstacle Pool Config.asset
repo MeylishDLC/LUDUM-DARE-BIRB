@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a7f493b27d084908bcef577fad742659, type: 3}
-  m_Name: Sticks Pair Pool Config
+  m_Name: Obstacle Pool Config
   m_EditorClassIdentifier: 
-  <InitialPoolSize>k__BackingField: 5
-  <MaxPoolSize>k__BackingField: 20
+  <InitialPoolSize>k__BackingField: 40
+  <MaxPoolSize>k__BackingField: 50
   <Prefabs>k__BackingField:
   - {fileID: 3360579657988338942, guid: fd1a25944ab817e4ea23ad98c5b25582, type: 3}
   - {fileID: 3784320292060446393, guid: 94cf31052e414254994b7c68ff7d8829, type: 3}
   - {fileID: 9146335461327516053, guid: afdb848d620dbcf4788f2e2e6fb813e1, type: 3}
   - {fileID: 4231470996957969807, guid: 9340afeceb6e349468e3925d20fa3a61, type: 3}
   - {fileID: 9075883451216239868, guid: bbb75d02092c905428e42d3781044343, type: 3}
+  - {fileID: 63773384874669278, guid: b4ed84ae2ee8af1489e34ce5da148bd2, type: 3}

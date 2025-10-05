@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EnvironmentObjects.Obstacles;
 using PoolSystem;
 using UnityEngine;
 
 namespace EnvironmentObjects.Sticks
 {
-    public class StickPairPool: GenericPool<StickPair>
+    public class ObstaclePool: GenericPool<BaseObstacle>
     {
-        public StickPairPool(PoolConfig poolConfig) : base(poolConfig)
+        public ObstaclePool(PoolConfig poolConfig) : base(poolConfig)
         { }
-        public override bool TryGetFromPool(out StickPair instance)
+        public override bool TryGetFromPool(out BaseObstacle instance)
         {
             if (Pool.TryDequeue(out instance))
             {
@@ -35,7 +36,7 @@ namespace EnvironmentObjects.Sticks
                 ReturnToPool(instance);
             }
         }
-        protected override StickPair InstantiateNewObject()
+        protected override BaseObstacle InstantiateNewObject()
         {
             var randIndex = Random.Range(0, ObjectPrefabs.Length);
             var instance = Object.Instantiate(ObjectPrefabs[randIndex], ParentTransform);

@@ -1,4 +1,5 @@
 ﻿using System;
+using EnvironmentObjects.Obstacles;
 using EnvironmentObjects.Sticks;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -27,7 +28,7 @@ namespace EnvironmentObjects.Collectables
             stickPair.OnObjectDisabled += RemoveRandomItem;
             _isInitialized = true;
         }
-        private void PlaceRandomItem(StickPair _)
+        private void PlaceRandomItem(BaseObstacle _)
         {
             if (_currentItem != null)
             {
@@ -52,7 +53,7 @@ namespace EnvironmentObjects.Collectables
                 _currentItem.OnCollected += StopPlacingItems;
             }
         }
-        private void RemoveRandomItem(StickPair _)
+        private void RemoveRandomItem(BaseObstacle _)
         {
             if (_currentItem == null)
             {

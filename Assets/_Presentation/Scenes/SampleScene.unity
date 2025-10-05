@@ -2155,7 +2155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2d5acf2cb884d0daf8ea291a6e4b10f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sticksGenerator: {fileID: 1001726357}
+  obstacleGenerator: {fileID: 1001726357}
   stickPairPoolConfig: {fileID: 11400000, guid: b98d39c2ca4139540839b4d17eda1b25, type: 2}
   collectableItemPoolConfig: {fileID: 11400000, guid: 1577b6b5222d6f5499c11768a5c97613, type: 2}
 --- !u!4 &1844355666
