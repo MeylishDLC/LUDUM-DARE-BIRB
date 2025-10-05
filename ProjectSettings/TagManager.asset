@@ -50,6 +50,9 @@ TagManager:
   - name: Sticks
     uniqueID: 2113852477
     locked: 0
+  - name: Leaves
+    uniqueID: 430457133
+    locked: 0
   - name: Trunks
     uniqueID: 3817696131
     locked: 0
