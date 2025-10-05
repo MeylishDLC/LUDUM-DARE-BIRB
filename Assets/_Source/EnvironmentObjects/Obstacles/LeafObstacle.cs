@@ -12,7 +12,7 @@ namespace EnvironmentObjects.Obstacles
         [SerializeField] private GameObject visualsToMove;
         
         [Header("Movement Settings")]
-        [SerializeField] private float movementSpeed = 2f;
+        [SerializeField] private float movementSpeedDuration = 2f;
         [SerializeField] private float moveDistance = 2f;
 
         [Header("Gizmos Settings")]
@@ -67,17 +67,17 @@ namespace EnvironmentObjects.Obstacles
 
         private async UniTask MoveFromLeftToRight(CancellationToken token)
         {
-            await visualsToMove.transform.DOMoveX(_leftPoint.x, movementSpeed).SetEase(Ease.Linear)
+            await visualsToMove.transform.DOMoveX(_leftPoint.x, movementSpeedDuration).SetEase(Ease.Linear)
                 .ToUniTask(cancellationToken: token);
-            await visualsToMove.transform.DOMoveX(_rightPoint.x, movementSpeed).SetEase(Ease.Linear)
+            await visualsToMove.transform.DOMoveX(_rightPoint.x, movementSpeedDuration).SetEase(Ease.Linear)
                 .ToUniTask(cancellationToken: token);
         }
 
         private async UniTask MoveFromRightToLeft(CancellationToken token)
         {
-            await visualsToMove.transform.DOMoveX(_rightPoint.x, movementSpeed).SetEase(Ease.Linear)
+            await visualsToMove.transform.DOMoveX(_rightPoint.x, movementSpeedDuration).SetEase(Ease.Linear)
                 .ToUniTask(cancellationToken: token);
-            await visualsToMove.transform.DOMoveX(_leftPoint.x, movementSpeed).SetEase(Ease.Linear)
+            await visualsToMove.transform.DOMoveX(_leftPoint.x, movementSpeedDuration).SetEase(Ease.Linear)
                 .ToUniTask(cancellationToken: token);
         }
         private void OnDrawGizmosSelected()

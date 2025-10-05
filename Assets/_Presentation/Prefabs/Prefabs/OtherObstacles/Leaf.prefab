@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualsToMove: {fileID: 6720849181286352593}
-  movementSpeed: 7
+  movementSpeedDuration: 3.5
   moveDistance: 8.7
   gizmoColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &6720849181286352593
@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 1308013283382064369}
   - component: {fileID: 6542922559901556256}
   - component: {fileID: 6496531744660909051}
+  - component: {fileID: 1518713748795139011}
   m_Layer: 6
   m_Name: Visual
   m_TagString: Untagged
@@ -189,3 +190,24 @@ PolygonCollider2D:
       - {x: 1.5637748, y: 0.45491016}
       - {x: 0.9988701, y: -0.31775448}
   m_UseDelaunayMesh: 0
+--- !u!95 &1518713748795139011
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6720849181286352593}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e746de22fd3af434fb57820635fa00d4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
