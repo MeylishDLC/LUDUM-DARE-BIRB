@@ -658,7 +658,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentCount: 6
   cameraOffset: 50
-  segmentPrefab: {fileID: 2738852428305650404, guid: d61b094f019176542a4582254b906c3b, type: 3}
+  segmentPrefabs:
+  - {fileID: -3853259223254842063, guid: 77d7acd8aeeaf1346ad003122b470998, type: 3}
+  - {fileID: -1845422036158148082, guid: 91bc177f74bdc0142acbed4d68d06073, type: 3}
+  - {fileID: -2995105109969973770, guid: 4607e57002d8ef0469dde4ccad6d2b78, type: 3}
+  - {fileID: 7790096701178304942, guid: 1d85b2c0c2f3e4d408038623017050f2, type: 3}
 --- !u!1 &939444004
 GameObject:
   m_ObjectHideFlags: 0
@@ -2358,7 +2362,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   segmentCount: 6
   cameraOffset: 50
-  segmentPrefab: {fileID: 2738852428305650404, guid: d61b094f019176542a4582254b906c3b, type: 3}
+  segmentPrefabs:
+  - {fileID: -3853259223254842063, guid: 77d7acd8aeeaf1346ad003122b470998, type: 3}
+  - {fileID: -1845422036158148082, guid: 91bc177f74bdc0142acbed4d68d06073, type: 3}
+  - {fileID: -2995105109969973770, guid: 4607e57002d8ef0469dde4ccad6d2b78, type: 3}
+  - {fileID: 7790096701178304942, guid: 1d85b2c0c2f3e4d408038623017050f2, type: 3}
 --- !u!1 &2085796882
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,11 +4,11 @@ using Zenject;
 
 namespace EnvironmentObjects.TrunkTiling
 {
-    public class InfiniteTrunk: MonoBehaviour
+    public class InfiniteTrunk : MonoBehaviour
     {
         [SerializeField] private int segmentCount = 10;
         [SerializeField] private float cameraOffset = 50f;
-        [SerializeField] private TrunkSegment segmentPrefab;
+        [SerializeField] private TrunkSegment[] segmentPrefabs;
 
         private TrunkSegment[] _segments;
         private Transform _player;
@@ -33,16 +33,47 @@ namespace EnvironmentObjects.TrunkTiling
                 if (seg.BottomPoint.position.y < cameraBottom)
                 {
                     var topSegment = GetTopSegment();
-                    AttachSegment(seg, topSegment);
+                    ReplaceSegmentAbove(seg, topSegment);
                 }
-
-                //if segment is way too far, placing it back to the bottom
                 else if (seg.TopPoint.position.y > cameraTop)
                 {
                     var bottomSegment = GetBottomSegment();
-                    AttachSegmentBelow(seg, bottomSegment);
+                    ReplaceSegmentBelow(seg, bottomSegment);
                 }
             }
+        }
+        private void ReplaceSegmentAbove(TrunkSegment oldSeg, TrunkSegment previousSeg)
+        {
+            Destroy(oldSeg.gameObject);
+
+            var newSeg = Instantiate(GetRandomPrefab(), transform);
+
+            AttachSegment(newSeg, previousSeg);
+
+            ReplaceSegmentReference(oldSeg, newSeg);
+        }
+        private void ReplaceSegmentBelow(TrunkSegment oldSeg, TrunkSegment previousSeg)
+        {
+            Destroy(oldSeg.gameObject);
+
+            var newSeg = Instantiate(GetRandomPrefab(), transform);
+            AttachSegmentBelow(newSeg, previousSeg);
+            ReplaceSegmentReference(oldSeg, newSeg);
+        }
+        private void ReplaceSegmentReference(TrunkSegment oldSeg, TrunkSegment newSeg)
+        {
+            for (int i = 0; i < _segments.Length; i++)
+            {
+                if (_segments[i] == oldSeg)
+                {
+                    _segments[i] = newSeg;
+                    break;
+                }
+            }
+        }
+        private TrunkSegment GetRandomPrefab()
+        {
+            return segmentPrefabs[Random.Range(0, segmentPrefabs.Length)];
         }
         private void AttachSegment(TrunkSegment newSeg, TrunkSegment previousSeg)
         {
@@ -64,6 +95,7 @@ namespace EnvironmentObjects.TrunkTiling
                     top = seg;
                 }
             }
+
             return top;
         }
         private TrunkSegment GetBottomSegment()
@@ -80,13 +112,14 @@ namespace EnvironmentObjects.TrunkTiling
                     bottom = _segments[i];
                 }
             }
+
             return bottom;
         }
         private void SpawnStartSegments()
         {
             for (var i = 0; i < segmentCount; i++)
             {
-                var seg = Instantiate(segmentPrefab, transform);
+                var seg = Instantiate(GetRandomPrefab(), transform);
                 if (i == 0)
                 {
                     seg.transform.localPosition = Vector3.zero;
@@ -95,6 +128,7 @@ namespace EnvironmentObjects.TrunkTiling
                 {
                     AttachSegment(seg, _segments[i - 1]);
                 }
+
                 _segments[i] = seg;
             }
         }
