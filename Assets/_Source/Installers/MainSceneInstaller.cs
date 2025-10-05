@@ -2,6 +2,7 @@ using Cinemachine;
 using Controller;
 using Core;
 using InputSystem;
+using UIScreens;
 using UnityEngine;
 using Zenject;
 
@@ -13,6 +14,7 @@ namespace Installers
         [SerializeField] private Camera mainCamera;
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
         [SerializeField] private PlayerController playerController;
+        [SerializeField] private Counter counter;
         
         public override void InstallBindings()
         {
@@ -20,6 +22,7 @@ namespace Installers
             BindInputListener();
             BindCameras();
             BindPlayer();
+            BindCounter();
         }
         private void BindSceneController()
         {
@@ -38,6 +41,9 @@ namespace Installers
         {
             Container.Bind<PlayerController>().FromInstance(playerController).AsSingle();
         }
-        
+        private void BindCounter()
+        {
+            Container.Bind<Counter>().FromInstance(counter).AsSingle();
+        }
     }
 }

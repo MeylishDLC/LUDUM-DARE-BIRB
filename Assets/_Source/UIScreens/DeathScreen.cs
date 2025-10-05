@@ -5,6 +5,7 @@ using Controller;
 using Core;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -18,15 +19,23 @@ namespace UIScreens
         [SerializeField] private Button restartButton;
         [SerializeField] private CanvasGroup canvasGroup;
         
+        [Header("Score texts")]
+        [SerializeField] private TMP_Text scoreText;
+        [SerializeField] private TMP_Text maxScoreText;
+        
         private SceneController _sceneController;
         private PlayerController _player;
         private CancellationToken _ctOnDestroy;
+        private Counter _counter;
+        private ScoreSaver _scoreSaver;
 
         [Inject]
-        public void Initialize(SceneController sceneController, PlayerController player)
+        public void Initialize(SceneController sceneController, PlayerController player, Counter counter, ScoreSaver scoreSaver)
         {
             _sceneController = sceneController;
             _player = player;
+            _counter = counter;
+            _scoreSaver = scoreSaver;
         }
         private void Awake()
         {
@@ -42,6 +51,7 @@ namespace UIScreens
         }
         private async UniTask ShowDeathScreenAsync(CancellationToken token)
         {
+            UpdateScoreTexts();
             gameObject.SetActive(true);
             canvasGroup.alpha = 0f;
             await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
@@ -51,6 +61,11 @@ namespace UIScreens
         {
             restartButton.interactable = false;
             _sceneController.ReloadScene();
+        }
+        private void UpdateScoreTexts()
+        {
+            scoreText.text += " " + _counter.GetCurrentScore();
+            maxScoreText.text += " " + _scoreSaver.GetMaxScore();
         }
     }
 }

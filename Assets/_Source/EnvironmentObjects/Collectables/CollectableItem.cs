@@ -8,6 +8,7 @@ namespace EnvironmentObjects.Collectables
     {
         public event Action<CollectableItem> OnObjectDisabled;
         public event Action OnCollected;
+        public static event Action OnItemCollectedGeneral;
         
         [SerializeField] private int points;
         [SerializeField] private LayerMask playerMask;
@@ -16,6 +17,7 @@ namespace EnvironmentObjects.Collectables
             if (((1 << other.gameObject.layer) & playerMask.value) != 0)
             {
                 OnCollected?.Invoke();
+                OnItemCollectedGeneral?.Invoke();
                 Debug.Log("Collected");
                 gameObject.SetActive(false);
             }
