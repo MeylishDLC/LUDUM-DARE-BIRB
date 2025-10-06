@@ -5,15 +5,15 @@ using EnvironmentObjects.Collectables;
 using EnvironmentObjects.Obstacles;
 using UnityEngine;
 using Zenject;
-using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 
 namespace EnvironmentObjects.Sticks
 {
     public class ObstacleGenerator : MonoBehaviour
     {
         [SerializeField] private float startYOffset = 3f;
+        [SerializeField] private float minSpawnY = -10f; 
         [SerializeField] private ObstacleGeneratorConfig config;
+
         private ObstaclePool _obstaclePool;
         private CollectableItemPool _itemPool;
         private Transform _player;
@@ -25,7 +25,6 @@ namespace EnvironmentObjects.Sticks
         {
             _player = playerController.transform;
         }
-
         public void InitializePools(ObstaclePool pool, CollectableItemPool itemPool)
         {
             _obstaclePool = pool;
@@ -38,15 +37,12 @@ namespace EnvironmentObjects.Sticks
                 Debug.LogError("Pools were not initialized");
                 return;
             }
-
             SpawnInitialObstacles();
         }
         private void Update()
         {
             if (_activeObstacles.Count == 0)
-            {
                 return;
-            }
 
             var top = GetTopObstacle();
             var bottom = _activeObstacles.Peek();
@@ -58,23 +54,28 @@ namespace EnvironmentObjects.Sticks
             }
             if (_player.position.y - config.DistanceY * 3f < bottom.transform.position.y)
             {
-                MoveTopToLast(bottom);
+                var candidateY = bottom.transform.position.y - config.DistanceY;
+                if (candidateY >= minSpawnY)
+                {
+                    MoveTopToLast(bottom);
+                }
             }
         }
         private void SpawnInitialObstacles()
         {
             var startY = _player.position.y - config.DistanceY * 2f + startYOffset;
+            startY = Mathf.Max(startY, minSpawnY);
+
             for (int i = 0; i < config.MaxPairs; i++)
             {
                 var obstacle = GetRandomObstacle();
 
                 if (obstacle is StickPair stickPair)
-                {
                     InitializeStickPair(stickPair);
-                }
 
                 var pos = new Vector3(0f, startY + i * config.DistanceY, 0f);
                 obstacle.transform.position = pos;
+                obstacle.gameObject.SetActive(true);
                 _activeObstacles.Enqueue(obstacle);
             }
         }
@@ -86,38 +87,40 @@ namespace EnvironmentObjects.Sticks
         private void MoveLastToTop(BaseObstacle top)
         {
             var recycled = _activeObstacles.Dequeue();
-            //return to pool 
             recycled.gameObject.SetActive(false);
 
-            //taking new random one
             var newObstacle = GetRandomObstacle();
             if (newObstacle is StickPair stickPair)
             {
                 InitializeStickPair(stickPair);
             }
-
             var newPos = top.transform.position + Vector3.up * config.DistanceY;
             newObstacle.transform.position = newPos;
-
+            newObstacle.gameObject.SetActive(true);
             _activeObstacles.Enqueue(newObstacle);
         }
         private void MoveTopToLast(BaseObstacle bottom)
         {
+            var newY = bottom.transform.position.y - config.DistanceY;
+            if (newY < minSpawnY)
+            {
+                return;
+            }
             var topList = new List<BaseObstacle>(_activeObstacles);
             var topPair = topList[^1];
-            //return to pool
+
             topPair.gameObject.SetActive(false);
 
-            //taking new random one
             var newObstacle = GetRandomObstacle();
             if (newObstacle is StickPair stickPair)
             {
                 InitializeStickPair(stickPair);
             }
 
-            var newPos = bottom.transform.position - Vector3.up * config.DistanceY;
+            var newPos = new Vector3(0f, newY, 0f);
             newObstacle.transform.position = newPos;
-            
+            newObstacle.gameObject.SetActive(true);
+
             topList.RemoveAt(topList.Count - 1);
             topList.Insert(0, newObstacle);
 
@@ -138,9 +141,9 @@ namespace EnvironmentObjects.Sticks
         }
         private BaseObstacle GetRandomObstacle()
         {
-            if (_obstaclePool.TryGetFromPool(out var pair))
+            if (_obstaclePool.TryGetFromPool(out var baseObstacle))
             {
-                return pair;
+                return baseObstacle;
             }
             throw new Exception("Stick pool is empty");
         }

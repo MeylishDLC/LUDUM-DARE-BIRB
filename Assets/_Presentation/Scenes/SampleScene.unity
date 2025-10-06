@@ -1253,7 +1253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b899a56fead483c924e2eb827d1b3c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startYOffset: 5
+  startYOffset: 8
+  minSpawnY: -1
   config: {fileID: 11400000, guid: aa85fd6136c83b046b6ae93272b4df8d, type: 2}
 --- !u!1 &1169012009
 GameObject:
