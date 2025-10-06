@@ -56,6 +56,9 @@ TagManager:
   - name: Trunks
     uniqueID: 3817696131
     locked: 0
+  - name: Tutorial
+    uniqueID: 3656615617
+    locked: 0
   - name: Player
     uniqueID: 3732737649
     locked: 0
