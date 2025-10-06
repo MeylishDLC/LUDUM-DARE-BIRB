@@ -47,6 +47,9 @@ namespace UIScreens
             restartButton.onClick.AddListener(CloseDeathScreen);
             _player.OnPlayerDeath += ShowDeathScreen;
             gameObject.SetActive(false);
+            
+            scoreText.text = "0";
+            maxScoreText.text = "0";
         }
         private void ShowDeathScreen()
         {
@@ -69,8 +72,8 @@ namespace UIScreens
         }
         private void UpdateScoreTexts()
         {
-            scoreText.text += " " + _counter.GetCurrentScore();
-            maxScoreText.text += " " + _scoreSaver.GetMaxScore();
+            scoreText.text = _counter.GetCurrentScore().ToString();
+            maxScoreText.text = _scoreSaver.GetMaxScore().ToString();
         }
     }
 }
