@@ -5,6 +5,7 @@ using Controller;
 using Core;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using FMOD.Studio;
 using SoundSystem;
 using TMPro;
 using UnityEngine;
@@ -59,7 +60,9 @@ namespace UIScreens
         private async UniTask ShowDeathScreenAsync(CancellationToken token)
         {
             UpdateScoreTexts();
+            _soundManager.ChangeMusic(_soundManager.FmodEventsConfig.DeathMusic, STOP_MODE.ALLOWFADEOUT);
             gameObject.SetActive(true);
+            
             canvasGroup.alpha = 0f;
             await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
             await canvasGroup.DOFade(1f, fadeInDuration).ToUniTask(cancellationToken: token);
@@ -67,6 +70,7 @@ namespace UIScreens
         private void CloseDeathScreen()
         {
             restartButton.interactable = false;
+            _soundManager.ChangeMusic(_soundManager.FmodEventsConfig.GameMusic, STOP_MODE.ALLOWFADEOUT);
             _sceneController.ReloadScene();
         }
         private void UpdateScoreTexts()

@@ -26,6 +26,13 @@ MonoBehaviour:
       Data3: -1265765724
       Data4: -1233401548
     Path: event:/Music/GameplayMusic
+  <DeathMusic>k__BackingField:
+    Guid:
+      Data1: -921545248
+      Data2: 1176771434
+      Data3: 209406132
+      Data4: 1057906921
+    Path: event:/Music/DeathMusic
   <JumpSound>k__BackingField:
     Guid:
       Data1: -2000591522
@@ -54,17 +61,3 @@ MonoBehaviour:
       Data3: 1193283994
       Data4: 1427959200
     Path: event:/SFX/UIOpen
-  <DeathSound>k__BackingField:
-    Guid:
-      Data1: -422479107
-      Data2: 1228706180
-      Data3: -952326000
-      Data4: -82417515
-    Path: event:/SFX/Death
-  <LeafSound>k__BackingField:
-    Guid:
-      Data1: -1269435909
-      Data2: 1325675907
-      Data3: -109557863
-      Data4: -1675558620
-    Path: event:/SFX/LeafFlySound
