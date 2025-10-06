@@ -62,7 +62,6 @@ namespace UIScreens
             gameObject.SetActive(true);
             canvasGroup.alpha = 0f;
             await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
-            _soundManager.PlayOneShot(_soundManager.FmodEventsConfig.DeathSound);
             await canvasGroup.DOFade(1f, fadeInDuration).ToUniTask(cancellationToken: token);
         }
         private void CloseDeathScreen()
