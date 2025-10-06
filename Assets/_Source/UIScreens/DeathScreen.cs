@@ -5,6 +5,7 @@ using Controller;
 using Core;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using SoundSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,14 +26,17 @@ namespace UIScreens
         
         private SceneController _sceneController;
         private PlayerController _player;
+        private SoundManager _soundManager;
         private CancellationToken _ctOnDestroy;
         private Counter _counter;
         private ScoreSaver _scoreSaver;
 
         [Inject]
-        public void Initialize(SceneController sceneController, PlayerController player, Counter counter, ScoreSaver scoreSaver)
+        public void Initialize(SceneController sceneController, PlayerController player, Counter counter, 
+            ScoreSaver scoreSaver, SoundManager soundManager)
         {
             _sceneController = sceneController;
+            _soundManager = soundManager;
             _player = player;
             _counter = counter;
             _scoreSaver = scoreSaver;
@@ -55,6 +59,7 @@ namespace UIScreens
             gameObject.SetActive(true);
             canvasGroup.alpha = 0f;
             await UniTask.Delay(TimeSpan.FromSeconds(delay), cancellationToken: token);
+            _soundManager.PlayOneShot(_soundManager.FmodEventsConfig.DeathSound);
             await canvasGroup.DOFade(1f, fadeInDuration).ToUniTask(cancellationToken: token);
         }
         private void CloseDeathScreen()

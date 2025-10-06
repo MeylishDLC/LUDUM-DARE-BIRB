@@ -14,15 +14,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MenuMusic>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 836067149
+      Data2: 1076408997
+      Data3: -728652630
+      Data4: -1934111394
+    Path: event:/Music/MainMenuMusic
   <GameMusic>k__BackingField:
     Guid:
-      Data1: 0
-      Data2: 0
-      Data3: 0
-      Data4: 0
-    Path: 
+      Data1: 1516070900
+      Data2: 1303360341
+      Data3: -1265765724
+      Data4: -1233401548
+    Path: event:/Music/GameplayMusic
+  <JumpSound>k__BackingField:
+    Guid:
+      Data1: -2000591522
+      Data2: 1196586275
+      Data3: -665590110
+      Data4: -34724883
+    Path: event:/SFX/Jump
+  <StickHitSound>k__BackingField:
+    Guid:
+      Data1: -84567377
+      Data2: 1125519627
+      Data3: 344954295
+      Data4: 1790869859
+    Path: event:/SFX/HitStick
+  <ItemCollectedSound>k__BackingField:
+    Guid:
+      Data1: -1613739999
+      Data2: 1249431441
+      Data3: -1539732552
+      Data4: -917353179
+    Path: event:/SFX/ItemCollected
+  <UISound>k__BackingField:
+    Guid:
+      Data1: 1529754331
+      Data2: 1286038473
+      Data3: 1193283994
+      Data4: 1427959200
+    Path: event:/SFX/UIOpen
+  <DeathSound>k__BackingField:
+    Guid:
+      Data1: -422479107
+      Data2: 1228706180
+      Data3: -952326000
+      Data4: -82417515
+    Path: event:/SFX/Death
+  <LeafSound>k__BackingField:
+    Guid:
+      Data1: -1269435909
+      Data2: 1325675907
+      Data3: -109557863
+      Data4: -1675558620
+    Path: event:/SFX/LeafFlySound

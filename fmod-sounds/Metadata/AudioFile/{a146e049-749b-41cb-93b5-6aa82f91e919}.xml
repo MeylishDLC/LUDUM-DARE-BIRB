@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{a146e049-749b-41cb-93b5-6aa82f91e919}">
+		<property name="assetPath">
+			<value>SFX/475347__fupicat__videogame-death-sound.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>3.1782312925170069</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{5fd90391-2d46-4b3f-b88e-50383c64f012}</destination>
+		</relationship>
+	</object>
+</objects>

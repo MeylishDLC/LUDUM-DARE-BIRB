@@ -53,6 +53,7 @@ namespace UIScreens
         }
         private async UniTask CloseSettingsAsync(CancellationToken cancellationToken)
         {
+            _soundManager.PlayOneShot(_soundManager.FmodEventsConfig.UISound);
             try
             {
                 await settingsPopup.PlayPopupAnimation(cancellationToken);
@@ -70,6 +71,7 @@ namespace UIScreens
         private async UniTask OpenSettingsAsync(CancellationToken cancellationToken)
         {
             settingsScreen.gameObject.SetActive(true);
+            _soundManager.PlayOneShot(_soundManager.FmodEventsConfig.UISound);
             try
             {
                 await settingsPopup.PlayPopupAnimation(cancellationToken);

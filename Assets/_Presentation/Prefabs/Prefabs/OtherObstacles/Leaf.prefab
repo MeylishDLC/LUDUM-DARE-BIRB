@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2627780989005716965}
   - component: {fileID: 3781654772886322692}
+  - component: {fileID: 4046530751471232728}
   m_Layer: 0
   m_Name: Leaf
   m_TagString: Untagged
@@ -49,6 +50,37 @@ MonoBehaviour:
   movementSpeedDuration: 3.5
   moveDistance: 8.7
   gizmoColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!114 &4046530751471232728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63773384874669278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: Player
+  EventReference:
+    Guid:
+      Data1: -1092435001
+      Data2: 1304708288
+      Data3: -1362965581
+      Data4: 2026309884
+    Path: event:/SFX/LeafFly
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 1
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1 &6720849181286352593
 GameObject:
   m_ObjectHideFlags: 0

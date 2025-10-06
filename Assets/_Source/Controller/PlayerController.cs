@@ -1,6 +1,7 @@
 ﻿using System;
 using Cinemachine;
 using InputSystem;
+using SoundSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
@@ -17,16 +18,19 @@ namespace Controller
 
         private PlayerModel _model;
         private InputListener _inputListener;
+        private SoundManager _soundManager;
         private CinemachineVirtualCamera _vcam;
         
         private float _jumpHoldTimer;
         private bool _isHoldingJump;
+        private bool _isDying;
 
         [Inject]
-        public void Initialize(InputListener inputListener, CinemachineVirtualCamera vcam)
+        public void Initialize(InputListener inputListener, CinemachineVirtualCamera vcam, SoundManager soundManager)
         {
             _inputListener = inputListener;
             _vcam = vcam;
+            _soundManager = soundManager;
         }
         private void Awake()
         {
@@ -34,12 +38,14 @@ namespace Controller
         }
         private void OnEnable()
         {
+            _inputListener.OnJumpStarted += PlayJumpSound;
             _inputListener.OnJumpStarted += HandleJumpStarted;
             _inputListener.OnJumpEnded += HandleJumpEnded;
             view.OnTriggered += HandleCollision;
         }
         private void OnDisable()
         {
+            _inputListener.OnJumpStarted -= PlayJumpSound;
             _inputListener.OnJumpStarted -= HandleJumpStarted;
             _inputListener.OnJumpEnded -= HandleJumpEnded;
             view.OnTriggered -= HandleCollision;
@@ -111,6 +117,12 @@ namespace Controller
         }
         private void Die()
         {
+            if (_isDying)
+            {
+                return;
+            }
+            _isDying = true;
+            PlayHitSound();
             _inputListener.DisableInput();
             view.PlayDeathAnimation();
             _vcam.Follow = null;
@@ -126,6 +138,14 @@ namespace Controller
 
             view.SetGravityMultiplier(2f);
             OnPlayerDeath?.Invoke();
+        }
+        private void PlayJumpSound()
+        {
+            _soundManager.PlayOneShot(_soundManager.FmodEventsConfig.JumpSound);
+        }
+        private void PlayHitSound()
+        {
+            _soundManager.PlayOneShot(_soundManager.FmodEventsConfig.StickHitSound);
         }
     }
 }

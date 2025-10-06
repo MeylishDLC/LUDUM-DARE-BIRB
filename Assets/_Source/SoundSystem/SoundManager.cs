@@ -71,24 +71,6 @@ namespace SoundSystem
             _musicEventInstance.stop(stopMode);
             _musicEventInstance.release();
         }
-        public void PlayMusicDuringTime(float time, EventReference music)
-        {
-            var instance = CreateInstance(music);
-    
-            var wrapper = new EventInstanceWrapper(instance);
-    
-            wrapper.Instance.start();
-
-            StopMusicAfterTime(wrapper, time).Forget();
-        }
-        public void StartPlayingSound(EventInstanceWrapper soundWrapper)
-        {
-            soundWrapper.Instance.start();
-        }
-        public void StopPlayingSound(EventInstanceWrapper soundWrapper, STOP_MODE stopMode)
-        {
-            soundWrapper.Instance.stop(stopMode);
-        }
         public void InitializeMusic(EventReference musicEventReference)
         {
             _musicEventInstance = CreateInstance(musicEventReference);
@@ -108,16 +90,6 @@ namespace SoundSystem
             _eventInstances.Add(eventInstance);
             return eventInstance;
         }
-        private async UniTask StopMusicAfterTime(EventInstanceWrapper wrapper, float time)
-        {
-            await UniTask.Delay(TimeSpan.FromSeconds(time));
-    
-            wrapper.Instance.stop(STOP_MODE.ALLOWFADEOUT);
-    
-            wrapper.Instance.release();
-    
-            _eventInstances.Remove(wrapper.Instance);
-        }
         private void LoadBanks()
         {
             foreach (var b in banks)
@@ -129,16 +101,5 @@ namespace SoundSystem
             RuntimeManager.CoreSystem.mixerResume();
         }
     }
-    public class EventInstanceWrapper
-    {
-        public EventInstance Instance { get; }
-        public EventInstanceWrapper(EventInstance instance)
-        {
-            Instance = instance;
-        }
-        public EventInstanceWrapper(EventReference soundReference)
-        {
-            Instance = RuntimeManager.CreateInstance(soundReference);
-        }
-    }
+   
 }

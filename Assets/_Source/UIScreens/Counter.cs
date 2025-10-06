@@ -2,6 +2,7 @@
 using Controller;
 using Core;
 using EnvironmentObjects.Collectables;
+using SoundSystem;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -15,22 +16,26 @@ namespace UIScreens
         private int _count;
         private PlayerController _player;
         private ScoreSaver _scoreSaver;
+        private SoundManager _soundManager;
 
         [Inject]
-        public void Initialize(PlayerController player, ScoreSaver scoreSaver)
+        public void Initialize(PlayerController player, ScoreSaver scoreSaver, SoundManager soundManager)
         {
             _player = player;
             _scoreSaver = scoreSaver;
+            _soundManager = soundManager;
         }
         private void Awake()
         {
             counterText.text = _count.ToString();
             _player.OnPlayerDeath += SaveScore; 
             CollectableItem.OnItemCollectedGeneral += UpdateText;
+            CollectableItem.OnItemCollectedGeneral += PlayItemCollectedSound;
         }
         private void OnDestroy()
         {
             CollectableItem.OnItemCollectedGeneral -= UpdateText;
+            CollectableItem.OnItemCollectedGeneral -= PlayItemCollectedSound;
         }
         public int GetCurrentScore() => _count;
         private void UpdateText()
@@ -45,6 +50,10 @@ namespace UIScreens
             {
                 _scoreSaver.SaveMaxScore(_count);
             }
+        }
+        private void PlayItemCollectedSound()
+        {
+            _soundManager.PlayOneShot(_soundManager.FmodEventsConfig.ItemCollectedSound);
         }
     }
 }
