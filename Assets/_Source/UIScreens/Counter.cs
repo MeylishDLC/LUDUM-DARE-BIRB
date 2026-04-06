@@ -2,6 +2,7 @@
 using Controller;
 using Core;
 using EnvironmentObjects.Collectables;
+using R3;
 using SoundSystem;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,9 @@ namespace UIScreens
         private PlayerController _player;
         private ScoreSaver _scoreSaver;
         private SoundManager _soundManager;
+        private IDisposable _playerDeathSubscription;
+        private IDisposable _itemCollectedSubscription;
+        private IDisposable _itemCollectedSoundSubscription;
 
         [Inject]
         public void Initialize(PlayerController player, ScoreSaver scoreSaver, SoundManager soundManager)
@@ -28,14 +32,15 @@ namespace UIScreens
         private void Awake()
         {
             counterText.text = _count.ToString();
-            _player.OnPlayerDeath += SaveScore; 
-            CollectableItem.OnItemCollectedGeneral += UpdateText;
-            CollectableItem.OnItemCollectedGeneral += PlayItemCollectedSound;
+            _playerDeathSubscription = _player.PlayerDeathStream.Subscribe(_ => SaveScore());
+            _itemCollectedSubscription = CollectableItem.ItemCollectedStream.Subscribe(_ => UpdateText());
+            _itemCollectedSoundSubscription = CollectableItem.ItemCollectedStream.Subscribe(_ => PlayItemCollectedSound());
         }
         private void OnDestroy()
         {
-            CollectableItem.OnItemCollectedGeneral -= UpdateText;
-            CollectableItem.OnItemCollectedGeneral -= PlayItemCollectedSound;
+            _playerDeathSubscription?.Dispose();
+            _itemCollectedSubscription?.Dispose();
+            _itemCollectedSoundSubscription?.Dispose();
         }
         public int GetCurrentScore() => _count;
         private void UpdateText()

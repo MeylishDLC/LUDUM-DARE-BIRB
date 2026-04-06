@@ -1,6 +1,7 @@
 ﻿using System;
 using Cinemachine;
 using InputSystem;
+using R3;
 using SoundSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,6 +12,7 @@ namespace Controller
     public class PlayerController : MonoBehaviour
     {
         public event Action OnPlayerDeath;
+        public Observable<Unit> PlayerDeathStream => _playerDeathSubject;
         
         [SerializeField] private PlayerControllerConfig config;
         [SerializeField] private PlayerView view; 
@@ -20,10 +22,14 @@ namespace Controller
         private InputListener _inputListener;
         private SoundManager _soundManager;
         private CinemachineVirtualCamera _vcam;
+        private readonly Subject<Unit> _playerDeathSubject = new();
         
         private float _jumpHoldTimer;
         private bool _isHoldingJump;
         private bool _isDying;
+        private IDisposable _jumpStartedSubscription;
+        private IDisposable _jumpStartedSoundSubscription;
+        private IDisposable _jumpEndedSubscription;
 
         [Inject]
         public void Initialize(InputListener inputListener, CinemachineVirtualCamera vcam, SoundManager soundManager)
@@ -38,17 +44,24 @@ namespace Controller
         }
         private void OnEnable()
         {
-            _inputListener.OnJumpStarted += PlayJumpSound;
-            _inputListener.OnJumpStarted += HandleJumpStarted;
-            _inputListener.OnJumpEnded += HandleJumpEnded;
+            _jumpStartedSoundSubscription = _inputListener.JumpStartedStream.Subscribe(_ => PlayJumpSound());
+            _jumpStartedSubscription = _inputListener.JumpStartedStream.Subscribe(_ => HandleJumpStarted());
+            _jumpEndedSubscription = _inputListener.JumpEndedStream.Subscribe(_ => HandleJumpEnded());
             view.OnTriggered += HandleCollision;
         }
         private void OnDisable()
         {
-            _inputListener.OnJumpStarted -= PlayJumpSound;
-            _inputListener.OnJumpStarted -= HandleJumpStarted;
-            _inputListener.OnJumpEnded -= HandleJumpEnded;
+            _jumpStartedSoundSubscription?.Dispose();
+            _jumpStartedSubscription?.Dispose();
+            _jumpEndedSubscription?.Dispose();
+            _jumpStartedSoundSubscription = null;
+            _jumpStartedSubscription = null;
+            _jumpEndedSubscription = null;
             view.OnTriggered -= HandleCollision;
+        }
+        private void OnDestroy()
+        {
+            _playerDeathSubject.Dispose();
         }
         private void Update()
         {
@@ -137,6 +150,7 @@ namespace Controller
             view.SetVelocity(velocity);
 
             view.SetGravityMultiplier(2f);
+            _playerDeathSubject.OnNext(Unit.Default);
             OnPlayerDeath?.Invoke();
         }
         private void PlayJumpSound()

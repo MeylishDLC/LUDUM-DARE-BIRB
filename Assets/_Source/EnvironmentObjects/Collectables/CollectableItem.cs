@@ -3,6 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using PoolSystem;
+using R3;
 using UnityEngine;
 
 namespace EnvironmentObjects.Collectables
@@ -12,11 +13,13 @@ namespace EnvironmentObjects.Collectables
         public event Action<CollectableItem> OnObjectDisabled;
         public event Action OnCollected;
         public static event Action OnItemCollectedGeneral;
+        public static Observable<Unit> ItemCollectedStream => ItemCollectedSubject;
         
         [SerializeField] private LayerMask playerMask;
         [SerializeField] private float scaleOnDisappear;
         [SerializeField] private float animationDuration = 0.2f;
         [SerializeField] Ease ease = Ease.InOutSine;
+        private static readonly Subject<Unit> ItemCollectedSubject = new();
 
         private bool _isCollected;
         private CancellationToken _ctOnDestroy;
@@ -37,6 +40,7 @@ namespace EnvironmentObjects.Collectables
             if (((1 << other.gameObject.layer) & playerMask.value) != 0)
             {
                 OnCollected?.Invoke();
+                ItemCollectedSubject.OnNext(Unit.Default);
                 OnItemCollectedGeneral?.Invoke();
 
                 _isCollected = true;

@@ -1,4 +1,5 @@
 using System;
+using R3;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,10 +9,14 @@ namespace InputSystem
     {
         public event Action OnJumpStarted;
         public event Action OnJumpEnded;
+        public Observable<Unit> JumpStartedStream => _jumpStartedSubject;
+        public Observable<Unit> JumpEndedStream => _jumpEndedSubject;
 
         private Controls _controls;
         private InputAction _jumpAction;
         private InputAction _moveAction;
+        private readonly Subject<Unit> _jumpStartedSubject = new();
+        private readonly Subject<Unit> _jumpEndedSubject = new();
 
         private void Awake()
         {
@@ -31,6 +36,8 @@ namespace InputSystem
         private void OnDestroy()
         {
             CleanUp();
+            _jumpStartedSubject.Dispose();
+            _jumpEndedSubject.Dispose();
         }
         public Vector2 GetMovementValue()
         {
@@ -51,10 +58,12 @@ namespace InputSystem
         }
         private void OnJumpButtonPressed(InputAction.CallbackContext context)
         {
+            _jumpStartedSubject.OnNext(Unit.Default);
             OnJumpStarted?.Invoke();
         }
         private void OnJumpButtonReleased(InputAction.CallbackContext context)
         {
+            _jumpEndedSubject.OnNext(Unit.Default);
             OnJumpEnded?.Invoke();
         }
        

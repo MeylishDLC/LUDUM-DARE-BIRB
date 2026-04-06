@@ -4,6 +4,7 @@ using Core;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using InputSystem;
+using R3;
 using UnityEngine;
 using Zenject;
 
@@ -18,6 +19,7 @@ namespace Tutorial
         private CancellationToken _ctOnDestroy;
         private InputListener _listener;
         private SceneController _sceneController;
+        private IDisposable _jumpStartedSubscription;
 
         [Inject]
         public void Initialize(InputListener listener, SceneController sceneController)
@@ -33,15 +35,20 @@ namespace Tutorial
                 return;
             }
             _ctOnDestroy = this.GetCancellationTokenOnDestroy();
-            _listener.OnJumpStarted += CloseWindow;
+            _jumpStartedSubscription = _listener.JumpStartedStream.Subscribe(_ => CloseWindow());
         }
         
         private void CloseWindow()
         {
-            _listener.OnJumpStarted -= CloseWindow;
+            _jumpStartedSubscription?.Dispose();
+            _jumpStartedSubscription = null;
             gameObject.transform.DOScale(new Vector3(scaleOnClose, scaleOnClose, scaleOnClose), animationDuration)
                 .SetEase(ease).ToUniTask(cancellationToken: _ctOnDestroy)
                 .ContinueWith(() => Destroy(gameObject)).Forget();
+        }
+        private void OnDestroy()
+        {
+            _jumpStartedSubscription?.Dispose();
         }
     }
 }

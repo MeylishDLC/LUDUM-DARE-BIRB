@@ -6,6 +6,7 @@ using Core;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using FMOD.Studio;
+using R3;
 using SoundSystem;
 using TMPro;
 using UnityEngine;
@@ -31,6 +32,7 @@ namespace UIScreens
         private CancellationToken _ctOnDestroy;
         private Counter _counter;
         private ScoreSaver _scoreSaver;
+        private IDisposable _playerDeathSubscription;
 
         [Inject]
         public void Initialize(SceneController sceneController, PlayerController player, Counter counter, 
@@ -46,7 +48,7 @@ namespace UIScreens
         {
             _ctOnDestroy = this.GetCancellationTokenOnDestroy();
             restartButton.onClick.AddListener(CloseDeathScreen);
-            _player.OnPlayerDeath += ShowDeathScreen;
+            _playerDeathSubscription = _player.PlayerDeathStream.Subscribe(_ => ShowDeathScreen());
             gameObject.SetActive(false);
             
             scoreText.text = "0";
@@ -54,8 +56,13 @@ namespace UIScreens
         }
         private void ShowDeathScreen()
         {
-            _player.OnPlayerDeath -= ShowDeathScreen;
+            _playerDeathSubscription?.Dispose();
+            _playerDeathSubscription = null;
             ShowDeathScreenAsync(_ctOnDestroy).Forget();
+        }
+        private void OnDestroy()
+        {
+            _playerDeathSubscription?.Dispose();
         }
         private async UniTask ShowDeathScreenAsync(CancellationToken token)
         {
