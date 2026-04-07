@@ -22,15 +22,37 @@ namespace EnvironmentObjects.Obstacles
         private Vector2 _rightPoint;
         private Vector2 _leftPoint;
 
-        private CancellationToken _ctOnDestroy;
-        private void Awake()
+        private CancellationTokenSource _cts;
+        private bool _movementStarted;
+
+        protected override void OnEnable()
         {
-            _ctOnDestroy = this.GetCancellationTokenOnDestroy();
-            
+            base.OnEnable();
+
+            // Object is pooled/reused, so recompute points and restart movement each enable.
+            DOTween.Kill(visualsToMove.transform);
+
             _startPos = visualsToMove.transform.position;
             _leftPoint = _startPos + Vector2.left * moveDistance;
             _rightPoint = _startPos + Vector2.right * moveDistance;
-            DoMovement(_ctOnDestroy).Forget();
+
+            _cts?.Cancel();
+            _cts?.Dispose();
+            _cts = CancellationTokenSource.CreateLinkedTokenSource(this.GetCancellationTokenOnDestroy());
+
+            _movementStarted = true;
+            DoMovement(_cts.Token).Forget();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+
+            DOTween.Kill(visualsToMove.transform);
+            if (_movementStarted)
+            {
+                _cts?.Cancel();
+            }
         }
         private async UniTask DoMovement(CancellationToken token)
         {

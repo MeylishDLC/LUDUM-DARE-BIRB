@@ -29,6 +29,7 @@ namespace Controller
         private float _jumpHoldTimer;
         private bool _isHoldingJump;
         private bool _isDying;
+        private float _simTime;
         private IDisposable _jumpStartedSubscription;
         private IDisposable _jumpStartedSoundSubscription;
         private IDisposable _jumpEndedSubscription;
@@ -73,22 +74,24 @@ namespace Controller
         }
         private void Update()
         {
-            HandleMovement();
-
-            if (_isHoldingJump)
-            {
-                _jumpHoldTimer += Time.deltaTime;
-                if (_jumpHoldTimer >= config.MaxJumpHoldTime)
-                {
-                    _isHoldingJump = false;
-                }
-            }
-            
             view.UpdateAnimations(view.GetVelocity());
             view.UpdateFacing(GetMovementXForFrame());
         }
         private void FixedUpdate()
         {
+            _simTime += Time.fixedDeltaTime;
+
+            HandleMovementFixed();
+
+            if (_isHoldingJump)
+            {
+                _jumpHoldTimer += Time.fixedDeltaTime;
+                if (_jumpHoldTimer >= config.MaxJumpHoldTime)
+                {
+                    _isHoldingJump = false;
+                }
+            }
+
             ApplyPhysics();
         }
         private float GetMovementXForFrame()
@@ -96,14 +99,14 @@ namespace Controller
             return _replayRead.IsReplaying ? _replayRead.ReplayMoveX : _inputListener.GetMovementValue().x;
         }
 
-        private void HandleMovement()
+        private void HandleMovementFixed()
         {
             var targetSpeed = GetMovementXForFrame() * config.HorizontalMoveSpeed;
             var currentSpeed = view.GetVelocity().x;
 
             var accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? config.Acceleration : config.Deceleration;
 
-            var newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, accelRate * Time.deltaTime);
+            var newSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, accelRate * Time.fixedDeltaTime);
 
             var velocity = view.GetVelocity();
             velocity.x = newSpeed;
@@ -118,7 +121,7 @@ namespace Controller
             _jumpHoldTimer = 0f;
             _isHoldingJump = true;
 
-            var jumpForce = _model.CalculateJumpForce(config.JumpForce, Time.time);
+            var jumpForce = _model.CalculateJumpForce(config.JumpForce, _simTime);
             var velocity = view.GetVelocity();
             velocity.y = jumpForce;
             view.SetVelocity(velocity);

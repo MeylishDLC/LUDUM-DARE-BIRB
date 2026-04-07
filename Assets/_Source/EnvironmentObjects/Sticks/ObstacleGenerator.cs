@@ -39,7 +39,7 @@ namespace EnvironmentObjects.Sticks
             }
             SpawnInitialObstacles();
         }
-        private void Update()
+        private void FixedUpdate()
         {
             if (_activeObstacles.Count == 0)
                 return;
