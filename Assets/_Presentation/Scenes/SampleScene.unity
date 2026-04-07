@@ -1225,6 +1225,7 @@ MonoBehaviour:
   virtualCamera: {fileID: 1420685858}
   playerController: {fileID: 1169012015}
   counter: {fileID: 511286135}
+  defaultGameplaySeed: 42
 --- !u!1 &997143593
 GameObject:
   m_ObjectHideFlags: 0

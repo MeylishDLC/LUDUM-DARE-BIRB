@@ -2,8 +2,8 @@
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using Replay;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace EnvironmentObjects.Obstacles
 {
@@ -57,7 +57,8 @@ namespace EnvironmentObjects.Obstacles
 
         private bool GetRandomDirection()
         {
-            var rand = Random.Range(0f, 1f);
+            var rng = GameplayRng.Instance;
+            var rand = rng != null ? rng.RangeFloat(0f, 1f) : UnityEngine.Random.Range(0f, 1f);
             if (rand < 0.5f)
             {
                 return true;

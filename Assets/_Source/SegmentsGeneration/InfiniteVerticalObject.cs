@@ -1,4 +1,5 @@
 ﻿using Controller;
+using Replay;
 using UnityEngine;
 using Zenject;
 
@@ -12,11 +13,13 @@ namespace SegmentsGeneration
 
         private Segment[] _segments;
         private Transform _player;
+        private IRng _rng;
 
         [Inject]
-        public void Initialize(PlayerController playerController)
+        public void Initialize(PlayerController playerController, IRng rng)
         {
             _player = playerController.transform;
+            _rng = rng;
         }
         private void Start()
         {
@@ -73,7 +76,7 @@ namespace SegmentsGeneration
         }
         private Segment GetRandomPrefab()
         {
-            return segmentPrefabs[Random.Range(0, segmentPrefabs.Length)];
+            return segmentPrefabs[_rng.RangeInt(0, segmentPrefabs.Length)];
         }
         private void AttachSegment(Segment newSeg, Segment previousSeg)
         {

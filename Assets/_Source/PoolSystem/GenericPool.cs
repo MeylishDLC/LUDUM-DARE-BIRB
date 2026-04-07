@@ -22,9 +22,8 @@ namespace PoolSystem
 
             MaxPoolSize = poolConfig.MaxPoolSize; 
             _startPoolSize = poolConfig.InitialPoolSize;
-            InitializeObjectPrefabs(poolConfig);  
-
-            InitPool(ObjectPrefabs);
+            //InitializeObjectPrefabs(poolConfig);  
+            //InitPool(ObjectPrefabs);
         }
         public void InitPool(T[] prefabs)
         {
@@ -49,7 +48,7 @@ namespace PoolSystem
         }
         protected abstract T InstantiateNewObject();
 
-        private void InitializeObjectPrefabs(PoolConfig poolConfig)
+        protected void InitializeObjectPrefabs(PoolConfig poolConfig)
         {
             ObjectPrefabs = new T[poolConfig.Prefabs.Length];
 

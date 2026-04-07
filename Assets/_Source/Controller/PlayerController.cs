@@ -2,6 +2,7 @@
 using Cinemachine;
 using InputSystem;
 using R3;
+using Replay;
 using SoundSystem;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -20,6 +21,7 @@ namespace Controller
 
         private PlayerModel _model;
         private InputListener _inputListener;
+        private IReplayReadState _replayRead;
         private SoundManager _soundManager;
         private CinemachineVirtualCamera _vcam;
         private readonly Subject<Unit> _playerDeathSubject = new();
@@ -32,11 +34,13 @@ namespace Controller
         private IDisposable _jumpEndedSubscription;
 
         [Inject]
-        public void Initialize(InputListener inputListener, CinemachineVirtualCamera vcam, SoundManager soundManager)
+        public void Initialize(InputListener inputListener, CinemachineVirtualCamera vcam, SoundManager soundManager,
+            IReplayReadState replayRead)
         {
             _inputListener = inputListener;
             _vcam = vcam;
             _soundManager = soundManager;
+            _replayRead = replayRead;
         }
         private void Awake()
         {
@@ -44,9 +48,13 @@ namespace Controller
         }
         private void OnEnable()
         {
-            _jumpStartedSoundSubscription = _inputListener.JumpStartedStream.Subscribe(_ => PlayJumpSound());
-            _jumpStartedSubscription = _inputListener.JumpStartedStream.Subscribe(_ => HandleJumpStarted());
-            _jumpEndedSubscription = _inputListener.JumpEndedStream.Subscribe(_ => HandleJumpEnded());
+            if (!ReplaySession.HasPendingReplay)
+            {
+                _jumpStartedSoundSubscription = _inputListener.JumpStartedStream.Subscribe(_ => PlayJumpSound());
+                _jumpStartedSubscription = _inputListener.JumpStartedStream.Subscribe(_ => HandleJumpStarted());
+                _jumpEndedSubscription = _inputListener.JumpEndedStream.Subscribe(_ => HandleJumpEnded());
+            }
+
             view.OnTriggered += HandleCollision;
         }
         private void OnDisable()
@@ -77,15 +85,20 @@ namespace Controller
             }
             
             view.UpdateAnimations(view.GetVelocity());
-            view.UpdateFacing(_inputListener.GetMovementValue().x);
+            view.UpdateFacing(GetMovementXForFrame());
         }
         private void FixedUpdate()
         {
             ApplyPhysics();
         }
+        private float GetMovementXForFrame()
+        {
+            return _replayRead.IsReplaying ? _replayRead.ReplayMoveX : _inputListener.GetMovementValue().x;
+        }
+
         private void HandleMovement()
         {
-            var targetSpeed = _inputListener.GetMovementValue().x * config.HorizontalMoveSpeed;
+            var targetSpeed = GetMovementXForFrame() * config.HorizontalMoveSpeed;
             var currentSpeed = view.GetVelocity().x;
 
             var accelRate = (Mathf.Abs(targetSpeed) > 0.01f) ? config.Acceleration : config.Deceleration;
@@ -153,6 +166,18 @@ namespace Controller
             _playerDeathSubject.OnNext(Unit.Default);
             OnPlayerDeath?.Invoke();
         }
+
+        public void ReplayApplyJumpStart()
+        {
+            PlayJumpSound();
+            HandleJumpStarted();
+        }
+
+        public void ReplayApplyJumpEnd()
+        {
+            HandleJumpEnded();
+        }
+
         private void PlayJumpSound()
         {
             _soundManager.PlayOneShot(_soundManager.FmodEventsConfig.JumpSound);

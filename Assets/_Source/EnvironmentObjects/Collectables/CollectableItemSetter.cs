@@ -1,8 +1,8 @@
 ﻿using System;
 using EnvironmentObjects.Obstacles;
 using EnvironmentObjects.Sticks;
+using Replay;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace EnvironmentObjects.Collectables
 {
@@ -67,13 +67,17 @@ namespace EnvironmentObjects.Collectables
         }
         private bool CheckPlaceChance()
         {
-            return Random.Range(0, 100) < itemPlaceChance;
+            var rng = GameplayRng.Instance;
+            var roll = rng != null ? rng.RangeInt(0, 100) : UnityEngine.Random.Range(0, 100);
+            return roll < itemPlaceChance;
         }
         private Transform GetRandomPoint()
         {
-            return stickPair.ItemSpawnPoints[
-                Random.Range(0, stickPair.ItemSpawnPoints.Length)
-            ];
+            var rng = GameplayRng.Instance;
+            var i = rng != null
+                ? rng.RangeInt(0, stickPair.ItemSpawnPoints.Length)
+                : UnityEngine.Random.Range(0, stickPair.ItemSpawnPoints.Length);
+            return stickPair.ItemSpawnPoints[i];
         }
         private void StopPlacingItems()
         {

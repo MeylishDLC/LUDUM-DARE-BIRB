@@ -2,14 +2,21 @@
 using System.Linq;
 using EnvironmentObjects.Obstacles;
 using PoolSystem;
+using Replay;
 using UnityEngine;
 
 namespace EnvironmentObjects.Sticks
 {
     public class ObstaclePool: GenericPool<BaseObstacle>
     {
-        public ObstaclePool(PoolConfig poolConfig) : base(poolConfig)
-        { }
+        private readonly IRng _rng;
+
+        public ObstaclePool(PoolConfig poolConfig, IRng rng) : base(poolConfig)
+        {
+            _rng = rng;
+            InitializeObjectPrefabs(poolConfig);  
+            InitPool(ObjectPrefabs);
+        }
         public override bool TryGetFromPool(out BaseObstacle instance)
         {
             if (Pool.TryDequeue(out instance))
@@ -38,7 +45,7 @@ namespace EnvironmentObjects.Sticks
         }
         protected override BaseObstacle InstantiateNewObject()
         {
-            var randIndex = Random.Range(0, ObjectPrefabs.Length);
+            var randIndex = _rng.RangeInt(0, ObjectPrefabs.Length);
             var instance = Object.Instantiate(ObjectPrefabs[randIndex], ParentTransform);
             
             instance.gameObject.SetActive(false);
