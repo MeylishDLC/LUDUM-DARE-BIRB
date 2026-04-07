@@ -67,13 +67,13 @@ namespace EnvironmentObjects.Collectables
         }
         private bool CheckPlaceChance()
         {
-            var rng = GameplayRng.Instance;
+            var rng = GameplayRng.Collectables ?? GameplayRng.Instance;
             var roll = rng != null ? rng.RangeInt(0, 100) : UnityEngine.Random.Range(0, 100);
             return roll < itemPlaceChance;
         }
         private Transform GetRandomPoint()
         {
-            var rng = GameplayRng.Instance;
+            var rng = GameplayRng.Collectables ?? GameplayRng.Instance;
             var i = rng != null
                 ? rng.RangeInt(0, stickPair.ItemSpawnPoints.Length)
                 : UnityEngine.Random.Range(0, stickPair.ItemSpawnPoints.Length);

@@ -19,6 +19,8 @@ namespace Core
         private ObstaclePool _obstaclePool;
         private CollectableItemPool _collectableItemPool;
         private IRng _rng;
+        private IRng _obstacleRng;
+        private IRng _collectableRng;
 
         [Inject]
         private void Initialize(IRng rng)
@@ -27,7 +29,14 @@ namespace Core
         }
         private void Awake()
         {
-            GameplayRng.Instance = _rng;
+            var seed = _rng.InitialSeed;
+            _obstacleRng = new SeededRng(seed ^ 0x51F15EED);
+            _collectableRng = new SeededRng(seed ^ 0x51F15EED);
+
+            GameplayRng.Obstacles = _obstacleRng;
+            GameplayRng.Collectables = _collectableRng;
+            GameplayRng.Instance = _obstacleRng;
+
             CreatePools();
             InjectPools();
         }
@@ -38,8 +47,8 @@ namespace Core
         }
         private void CreatePools()
         {
-            _obstaclePool = new ObstaclePool(stickPairPoolConfig, _rng);
-            _collectableItemPool = new CollectableItemPool(collectableItemPoolConfig, _rng);
+            _obstaclePool = new ObstaclePool(stickPairPoolConfig, _obstacleRng);
+            _collectableItemPool = new CollectableItemPool(collectableItemPoolConfig, _collectableRng);
         }
         private void InjectPools()
         {

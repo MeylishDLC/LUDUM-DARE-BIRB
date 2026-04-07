@@ -79,7 +79,7 @@ namespace EnvironmentObjects.Obstacles
 
         private bool GetRandomDirection()
         {
-            var rng = GameplayRng.Instance;
+            var rng = GameplayRng.Obstacles ?? GameplayRng.Instance;
             var rand = rng != null ? rng.RangeFloat(0f, 1f) : UnityEngine.Random.Range(0f, 1f);
             if (rand < 0.5f)
             {
